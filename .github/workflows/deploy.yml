@@ -23,10 +23,8 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: install serverless and plugins
-        run: |
-          npm install -g serverless
-         
+      - name: install serverless v3
+        run: npm install -g serverless@3
 
       - name: install Python requirements
         run: |
