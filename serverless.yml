@@ -35,14 +35,20 @@ functions:
   placesHandler:
     handler: handlers/places_handler.lambda_handler
     timeout: 60
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
 
   reservationsHandler:
     handler: handlers/reservations_handler.lambda_handler
     timeout: 60
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
 
   itinerariesHandler:
     handler: handlers/itineraries_handler.lambda_handler
     timeout: 60
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
 
 stepFunctions:
   stateMachines:
@@ -76,7 +82,7 @@ custom:
   pythonRequirements:
     slim: true
     layer: true
+    pythonBin: python3.9
     useDownloadCache: false
     useStaticCache: false
-    pythonBin: python3.9
 
