@@ -1,0 +1,21 @@
+# carpetas que no se deben subir
+/data/
+/notebooks/
+/power BI/
+/__pycache__/
+/.env
+.DS_Store
+
+# archivos temporales
+*.pyc
+*.pyo
+config.py
+main.py
+*.log
+*.sqlite
+*.csv
+
+# entorno virtual local
+.venv/
+env/
+

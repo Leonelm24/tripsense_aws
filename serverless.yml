@@ -1,0 +1,78 @@
+service: tripsense-etl
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: eu-north-1
+  stage: dev
+  environment:
+    GOOGLE_API_KEY: ${env:API_GOOGLE}     # <- GitHub Secret
+    HOTEL_LAT: 39.5696                    # <- Coordenadas públicas
+    HOTEL_LON: 2.6500
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:ListBucket
+          Resource:
+            - arn:aws:s3:::tripsense
+            - arn:aws:s3:::tripsense/*
+        - Effect: Allow
+          Action:
+            - logs:*
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - states:StartExecution
+          Resource: "*"
+
+functions:
+  placesHandler:
+    handler: handlers/places_handler.lambda_handler
+    timeout: 60
+
+  reservationsHandler:
+    handler: handlers/reservations_handler.lambda_handler
+    timeout: 60
+
+  itinerariesHandler:
+    handler: handlers/itineraries_handler.lambda_handler
+    timeout: 60
+
+stepFunctions:
+  stateMachines:
+    placesFlow:
+      name: placesFlow-${sls:stage}
+      definition:
+        Comment: "Flujo ETL TripSense"
+        StartAt: RunPlaces
+        States:
+          RunPlaces:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [placesHandler, Arn]
+            Next: RunReservations
+          RunReservations:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [reservationsHandler, Arn]
+            Next: RunItineraries
+          RunItineraries:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [itinerariesHandler, Arn]
+            End: true
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    layer: true
+

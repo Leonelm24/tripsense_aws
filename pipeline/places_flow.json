@@ -1,0 +1,22 @@
+{
+  "Comment": "Flujo ETL TripSense – AWS Step Functions",
+  "StartAt": "RunPlaces",
+  "States": {
+    "RunPlaces": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-north-1:YOUR_ACCOUNT_ID:function:tripsense-etl-dev-placesHandler",
+      "Next": "RunReservations"
+    },
+    "RunReservations": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-north-1:YOUR_ACCOUNT_ID:function:tripsense-etl-dev-reservationsHandler",
+      "Next": "RunItineraries"
+    },
+    "RunItineraries": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-north-1:YOUR_ACCOUNT_ID:function:tripsense-etl-dev-itinerariesHandler",
+      "End": true
+    }
+  }
+}
+
