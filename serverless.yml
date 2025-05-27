@@ -1,3 +1,4 @@
+
 service: tripsense-etl
 
 provider:
@@ -27,6 +28,8 @@ provider:
         - Effect: Allow
           Action:
             - states:StartExecution
+            - states:DescribeStateMachine
+            - states:ListExecutions
           Resource: "*"
 
 functions:
@@ -68,9 +71,9 @@ stepFunctions:
 
 plugins:
   - serverless-python-requirements
+  - serverless-step-functions
 
 custom:
   pythonRequirements:
     dockerizePip: true
     layer: true
-
