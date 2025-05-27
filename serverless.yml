@@ -1,4 +1,3 @@
-
 service: tripsense-etl
 
 provider:
@@ -75,5 +74,7 @@ plugins:
 
 custom:
   pythonRequirements:
-    dockerizePip: true
+    slim: true
     layer: true
+    useDownloadCache: false
+    useStaticCache: false
