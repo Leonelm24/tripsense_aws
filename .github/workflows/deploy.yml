@@ -26,6 +26,9 @@ jobs:
       - name: install serverless v3
         run: npm install -g serverless@3
 
+      - name: install serverless plugins
+        run: npm install --save-dev serverless-python-requirements
+
       - name: install Python requirements
         run: |
           python -m pip install --upgrade pip
