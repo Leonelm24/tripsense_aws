@@ -1,5 +1,4 @@
 service: tripsense-etl
-frameworkVersion: '3.x'
 
 provider:
   name: aws
@@ -7,10 +6,9 @@ provider:
   region: eu-north-1
   stage: dev
   environment:
-    GOOGLE_API_KEY: ${env:API_GOOGLE}     # <- GitHub Secret
-    HOTEL_LAT: 39.5696                    # <- Coordenadas públicas
+    GOOGLE_API_KEY: ${env:API_GOOGLE}
+    HOTEL_LAT: 39.5696
     HOTEL_LON: 2.6500
-
   iam:
     role:
       statements:
